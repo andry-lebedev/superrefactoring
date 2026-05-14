@@ -1,15 +1,15 @@
 ---
 name: writing-refactor-plans
-description: Use when refactor research exists or requirements are clear and Codex needs to choose a safe refactoring scope, compare options, and write a behavior-preserving implementation plan before code changes
+description: Use when refactor research exists or requirements are clear and an agent needs to choose a safe refactoring scope, compare options, and write a behavior-preserving implementation plan before code changes
 ---
 
 # Writing Refactor Plans
 
 ## Overview
 
-Turn refactor research into a scoped, reviewable implementation plan.
+Write comprehensive refactor implementation plans assuming the implementer has zero context for the codebase and questionable taste. Document what to change, why it is safe, which behavior must be preserved, which files are likely touched, which tests prove safety, and exactly how each task should be verified.
 
-Core principle: one design hypothesis at a time.
+Core principle: one design hypothesis at a time, expressed as bite-sized tasks.
 
 ## Hard Gates
 
@@ -17,6 +17,8 @@ Core principle: one design hypothesis at a time.
 - Do not write output files unless the user explicitly asks.
 - If research is insufficient, use `refactor-research` first.
 - Do not plan behavior changes unless clearly labeled and justified.
+- Do not include vague steps an implementer has to invent later.
+- Do not bundle unrelated refactors into one task.
 
 ## Required Inputs
 
@@ -26,14 +28,34 @@ Core principle: one design hypothesis at a time.
 - Focus areas
 - Refactor depth: conservative, moderate, or aggressive
 
-## Process
+## Output Location
+
+Default to writing the plan in the response. If the user explicitly asks for a file, save it to:
+
+```txt
+docs/superrefactoring/plans/YYYY-MM-DD-<refactor-name>.md
+```
+
+User-specified locations override this default.
+
+## Scope Check
+
+Before writing tasks, check whether the research points to one refactor or several independent refactors.
+
+If there are multiple independent subsystems, split the plan into separate plans or clearly mark later plans as follow-ups. Each plan should produce a working, testable, behavior-preserving change on its own.
+
+Do not let "future-proof" become permission to rewrite the world.
+
+## Refactor Decision
+
+Every plan must first choose scope.
 
 1. Restate behavior and invariants.
-2. State the root maintainability hypothesis:
+2. State the root maintainability hypothesis.
 
    > I think this code is hard to support because X. Refactoring Y into Z will improve A, B, and C while preserving behavior.
 
-3. Compare options:
+3. Compare options.
    - No refactor
    - Conservative refactor
    - Future-proof refactor
@@ -45,56 +67,182 @@ Core principle: one design hypothesis at a time.
    - Test gaps
    - Overengineering risks
    - Missed simpler alternatives
-5. Choose a verdict:
+5. Choose a verdict.
    - `NO_REFACTOR_NEEDED`
    - `CONSERVATIVE_REFACTOR`
    - `FUTURE_PROOF_REFACTOR`
    - `AGGRESSIVE_REWRITE`
    - `DEFER_REFACTOR`
-6. Write the implementation plan.
-   - Keep tasks small.
-   - Put tests before or alongside refactors.
-   - Define out-of-scope changes.
-   - Include acceptance criteria and rollback notes.
 
-## Plan Format
+If the verdict is `NO_REFACTOR_NEEDED` or `DEFER_REFACTOR`, do not write implementation tasks. Explain why and list optional follow-ups.
+
+## File Structure Mapping
+
+Before defining tasks, map the files likely to be touched and what each is responsible for.
+
+For each file, identify:
+
+- Current responsibility
+- Planned responsibility after the refactor
+- Whether it is create / modify / delete / test-only
+- Upstream/downstream contracts it touches
+- Tests that should protect it
+
+This map drives task decomposition. Files that change together should usually appear in the same task. Unrelated files should not.
+
+## Task Granularity
+
+Each task should be small enough for a fresh implementation agent to complete and review independently.
+
+Good task steps are concrete actions:
+
+- Write or update the behavior-preserving test.
+- Run it and confirm the expected failure when applicable.
+- Make the smallest refactor that satisfies the test.
+- Run focused verification.
+- Run broader verification if the contract or side effects changed.
+- Commit the task if the execution workflow uses commits.
+
+## Plan Header
+
+Every refactor plan MUST start with this header:
 
 ```md
-# Refactor Plan
+# <Refactor Name> Implementation Plan
 
-## Summary
-## Root Maintainability Problem
-## Verdict
-## Approved Scope
-## Out Of Scope
+> **For agentic workers:** REQUIRED SUB-SKILL: Use subagent-driven development or executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking. Preserve behavior unless a task explicitly labels and justifies a behavior change.
+
+**Goal:** <one sentence describing the refactor outcome>
+
+**Refactor hypothesis:** I think this code is hard to support because <cause>. Refactoring <change> will improve <benefits> while preserving <behavior>.
+
+**Approved scope:** <exact boundary of what may change>
+
+**Out of scope:** <changes that must not happen in this pass>
+
+**Verdict:** <NO_REFACTOR_NEEDED | CONSERVATIVE_REFACTOR | FUTURE_PROOF_REFACTOR | AGGRESSIVE_REWRITE | DEFER_REFACTOR>
+
+---
+```
+
+## Required Sections
+
+After the header, include:
+
+```md
 ## Behavior To Preserve
+## File Structure
 ## Options Considered
 ## Risks And Mitigations
 ## Tasks
-## Tests Required
 ## Verification Commands
 ## Rollback Plan
 ## Optional Follow-Ups
 ```
 
-## Task Format
+## Task Structure
 
-```md
-### Task N: <name>
+Use this format for every task:
 
-- Goal:
-- Files likely touched:
-- Exact change:
-- Behavior preserved:
-- Tests to add/update:
-- Acceptance criteria:
-- Risks:
-- Rollback notes:
+````md
+### Task N: <specific task name>
+
+**Goal:** <one outcome>
+
+**Files:**
+- Create: `exact/path/to/new-file.ext`
+- Modify: `exact/path/to/existing-file.ext`
+- Delete: `exact/path/to/deleted-file.ext`
+- Test: `exact/path/to/test-file.ext`
+
+**Behavior preserved:** <specific invariant, input/output, side effect, or contract>
+
+**Acceptance criteria:**
+- <observable result>
+- <test or verification result>
+
+- [ ] **Step 1: Write or update the safety test**
+
+Describe the exact behavior to test. Include real test code when the target test framework and API are clear. If exact code cannot be written safely from current context, provide the exact test name, fixture, assertion, and file path.
+
+```<language>
+<test code or precise test skeleton>
 ```
+
+- [ ] **Step 2: Run the test and confirm the expected result**
+
+Run: `<exact focused command>`
+Expected: `<expected failure before refactor or pass if this is characterization coverage>`
+
+- [ ] **Step 3: Make the refactor**
+
+Describe the exact code movement, extraction, deletion, rename, boundary change, or contract preservation. Include code snippets only when they are reliable enough for an implementer to use directly.
+
+- [ ] **Step 4: Run focused verification**
+
+Run: `<exact focused command>`
+Expected: `PASS`
+
+- [ ] **Step 5: Run broader verification**
+
+Run: `<exact broader command>`
+Expected: `PASS`
+
+- [ ] **Step 6: Commit task changes**
+
+```sh
+git add <paths>
+git commit -m "refactor: <task summary>"
+```
+````
+
+Omit create / modify / delete lines that do not apply. Omit the commit step only if the user or execution environment does not want per-task commits.
+
+## No Placeholders
+
+Every task must contain enough information for a fresh agent to execute it without guessing.
+
+These are plan failures:
+
+- `TBD`, `TODO`, `fill in later`, `as appropriate`
+- "Add tests" without naming the test file and behavior
+- "Improve error handling" without naming the exact error boundary and expected behavior
+- "Clean up this file" without naming the supportability problem
+- "Similar to Task N" instead of repeating the needed detail
+- "Run tests" without the exact command
+- Behavior changes hidden inside refactor wording
+
+If exact code cannot be provided because research is insufficient, stop and use `refactor-research`.
+
+## Self-Review
+
+After writing the plan, review it before presenting it.
+
+1. Research coverage: Does every task trace back to evidence from the research?
+2. Behavior preservation: Is every invariant protected by a test or verification command?
+3. Scope discipline: Are unrelated cleanups excluded?
+4. Placeholder scan: Remove vague language listed in "No Placeholders."
+5. Type/name consistency: Do functions, classes, files, schemas, and commands use the same names throughout?
+6. Execution readiness: Could a fresh agent implement each task from only this plan?
+
+Fix issues inline. Do not present the plan until this review passes.
 
 ## Integration
 
-After the user approves the plan, use existing workflow skills:
+After presenting the plan, ask for approval before implementation.
+
+Use this handoff:
+
+```md
+Plan complete. Two execution options:
+
+1. Subagent-Driven (recommended) - dispatch a fresh implementation agent per task, with spec and quality review after each task
+2. Inline Execution - execute tasks in this session with verification checkpoints
+
+Which approach?
+```
+
+If the user chooses execution, use existing workflow skills:
 
 - `using-git-worktrees` before implementation
 - `test-driven-development` for behavior-preserving changes
@@ -111,3 +259,6 @@ Stop and revise the plan if:
 - Public behavior changes are hidden inside "refactor."
 - The plan adds abstractions without deleting or simplifying complexity.
 - The architecture cannot be explained in three sentences.
+- A task cannot be implemented without rereading the entire codebase.
+- The plan requires changing many files but cannot explain the ownership boundary.
+- The rollback plan is "revert everything" for a risky multi-step refactor.

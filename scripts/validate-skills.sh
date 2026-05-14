@@ -34,6 +34,25 @@ for skill in "$ROOT"/skills/*/SKILL.md; do
   }
 done
 
+writing_refactor_plans="$ROOT/skills/writing-refactor-plans/SKILL.md"
+required_plan_markers=(
+  "## Scope Check"
+  "## File Structure Mapping"
+  "## Plan Header"
+  "> **For agentic workers:**"
+  "- [ ] **Step 1: Write or update the safety test**"
+  "## No Placeholders"
+  "## Self-Review"
+  "Plan complete. Two execution options:"
+)
+
+for marker in "${required_plan_markers[@]}"; do
+  grep -Fq -- "$marker" "$writing_refactor_plans" || {
+    echo "writing-refactor-plans is missing Superpowers-style marker: $marker" >&2
+    exit 1
+  }
+done
+
 python3 -m json.tool "$ROOT/.codex-plugin/plugin.json" >/dev/null
 python3 -m json.tool "$ROOT/.claude-plugin/plugin.json" >/dev/null
 python3 -m json.tool "$ROOT/.claude-plugin/marketplace.json" >/dev/null
