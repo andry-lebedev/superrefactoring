@@ -11,7 +11,7 @@ You have the Superrefactoring skills library available.
 Use refactor-research for maintainability-focused PR/local-diff investigation before code changes.
 Use writing-refactor-plans when research exists and the user wants a scoped refactor plan.
 
-These skills do not write output files or implement code unless the user explicitly asks through a separate execution workflow.
+These skills do not write output files or implement code. After plan approval, execution must be handed off to Superpowers execution: superpowers:subagent-driven-development when available, otherwise superpowers:executing-plans.
 </IMPORTANT>`;
 
   return {

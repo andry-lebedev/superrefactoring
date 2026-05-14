@@ -24,7 +24,7 @@ The skills bias toward:
 
 ## What These Skills Do Not Do
 
-They do not implement refactors directly. After a plan is approved, use your normal execution workflow: TDD, subagent-driven development, code review, and final verification.
+They do not implement refactors directly. After a plan is approved, execute it through Superpowers execution: `superpowers:subagent-driven-development` when subagents are available, or `superpowers:executing-plans` as the fallback.
 
 ## Validation
 

@@ -14,7 +14,7 @@ escape_for_json() {
   printf '%s' "$s"
 }
 
-session_context="<IMPORTANT>\nYou have the Superrefactoring skills library available.\n\nUse refactor-research when a user asks to inspect a PR, branch, or local diff for maintainability/refactoring opportunities before code changes.\nUse writing-refactor-plans when research exists and the user wants a scoped, behavior-preserving refactor plan.\n\nThese skills do not write output files or implement code unless the user explicitly asks through a separate execution workflow.\n</IMPORTANT>"
+session_context="<IMPORTANT>\nYou have the Superrefactoring skills library available.\n\nUse refactor-research when a user asks to inspect a PR, branch, or local diff for maintainability/refactoring opportunities before code changes.\nUse writing-refactor-plans when research exists and the user wants a scoped, behavior-preserving refactor plan.\n\nThese skills do not write output files or implement code. After plan approval, execution must be handed off to Superpowers execution: superpowers:subagent-driven-development when available, otherwise superpowers:executing-plans.\n</IMPORTANT>"
 session_context_escaped="$(escape_for_json "$session_context")"
 
 if [ -n "${CURSOR_PLUGIN_ROOT:-}" ]; then

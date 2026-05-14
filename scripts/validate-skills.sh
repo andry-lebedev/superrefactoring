@@ -43,7 +43,9 @@ required_plan_markers=(
   "- [ ] **Step 1: Write or update the safety test**"
   "## No Placeholders"
   "## Self-Review"
-  "Plan complete. Two execution options:"
+  "Superpowers execution"
+  "superpowers:subagent-driven-development"
+  "superpowers:executing-plans"
 )
 
 for marker in "${required_plan_markers[@]}"; do
@@ -52,6 +54,11 @@ for marker in "${required_plan_markers[@]}"; do
     exit 1
   }
 done
+
+if grep -Fq "Inline Execution" "$writing_refactor_plans"; then
+  echo "writing-refactor-plans must not offer generic Inline Execution; use Superpowers execution instead" >&2
+  exit 1
+fi
 
 refactor_research="$ROOT/skills/refactor-research/SKILL.md"
 required_research_markers=(

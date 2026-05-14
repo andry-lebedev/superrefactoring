@@ -110,7 +110,7 @@ Every refactor plan MUST start with this header:
 ```md
 # <Refactor Name> Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use subagent-driven development or executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking. Preserve behavior unless a task explicitly labels and justifies a behavior change.
+> **For agentic workers:** REQUIRED EXECUTION: Use Superpowers execution to implement this plan task-by-task: `superpowers:subagent-driven-development` when subagents are available, otherwise `superpowers:executing-plans`. Steps use checkbox (`- [ ]`) syntax for tracking. Preserve behavior unless a task explicitly labels and justifies a behavior change.
 
 **Goal:** <one sentence describing the refactor outcome>
 
@@ -234,21 +234,24 @@ After presenting the plan, ask for approval before implementation.
 Use this handoff:
 
 ```md
-Plan complete. Two execution options:
+Plan complete. Execution must use Superpowers execution.
 
-1. Subagent-Driven (recommended) - dispatch a fresh implementation agent per task, with spec and quality review after each task
-2. Inline Execution - execute tasks in this session with verification checkpoints
+1. `superpowers:subagent-driven-development` (recommended) - dispatch a fresh implementation agent per task, with spec and quality review after each task
+2. `superpowers:executing-plans` - fallback when subagents are unavailable or the user wants batch execution with checkpoints
 
-Which approach?
+Which Superpowers execution path?
 ```
 
-If the user chooses execution, use existing workflow skills:
+If the user chooses execution, stop using Superrefactoring as the executor and hand off to Superpowers:
 
-- `using-git-worktrees` before implementation
-- `test-driven-development` for behavior-preserving changes
-- `subagent-driven-development` or `executing-plans` for task execution
-- `requesting-code-review` after meaningful changes
-- `verification-before-completion` before claiming completion
+- `superpowers:using-git-worktrees` before implementation
+- `superpowers:test-driven-development` for behavior-preserving changes
+- `superpowers:subagent-driven-development` for normal task execution
+- `superpowers:executing-plans` only when subagent-driven execution is unavailable or explicitly not wanted
+- `superpowers:requesting-code-review` after meaningful changes
+- `superpowers:verification-before-completion` before claiming completion
+
+Do not execute the plan through an ad hoc local workflow. Superrefactoring researches and plans; Superpowers executes.
 
 ## Red Flags
 
