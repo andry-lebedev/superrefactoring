@@ -53,6 +53,22 @@ for marker in "${required_plan_markers[@]}"; do
   }
 done
 
+refactor_research="$ROOT/skills/refactor-research/SKILL.md"
+required_research_markers=(
+  "## Required Scout Passes"
+  "### Upstream Scout"
+  "### Downstream Scout"
+  "### Pattern Scout"
+  "Do not skip any scout because the diff looks small."
+)
+
+for marker in "${required_research_markers[@]}"; do
+  grep -Fq -- "$marker" "$refactor_research" || {
+    echo "refactor-research is missing mandatory scout marker: $marker" >&2
+    exit 1
+  }
+done
+
 python3 -m json.tool "$ROOT/.codex-plugin/plugin.json" >/dev/null
 python3 -m json.tool "$ROOT/.claude-plugin/plugin.json" >/dev/null
 python3 -m json.tool "$ROOT/.claude-plugin/marketplace.json" >/dev/null
