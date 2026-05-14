@@ -1,0 +1,6 @@
+{
+  "name": "superrefactoring",
+  "description": "Refactoring research and planning skills for maintainability-focused PR and local-diff work.",
+  "version": "0.1.0",
+  "contextFileName": "GEMINI.md"
+}

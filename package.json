@@ -1,0 +1,10 @@
+{
+  "name": "superrefactoring",
+  "version": "0.1.0",
+  "type": "module",
+  "main": ".opencode/plugins/superrefactoring.js",
+  "scripts": {
+    "test": "bash tests/skill-triggering/run-all.sh",
+    "validate": "bash scripts/validate-skills.sh"
+  }
+}

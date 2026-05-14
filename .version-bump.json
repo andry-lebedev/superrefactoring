@@ -1,0 +1,11 @@
+{
+  "currentVersion": "0.1.0",
+  "files": [
+    "package.json",
+    ".codex-plugin/plugin.json",
+    ".claude-plugin/plugin.json",
+    ".claude-plugin/marketplace.json",
+    ".cursor-plugin/plugin.json",
+    "gemini-extension.json"
+  ]
+}

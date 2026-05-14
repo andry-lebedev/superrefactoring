@@ -1,0 +1,18 @@
+{
+  "name": "superrefactoring-dev",
+  "description": "Development marketplace for Superrefactoring skills",
+  "owner": {
+    "name": "Andry Lebedev"
+  },
+  "plugins": [
+    {
+      "name": "superrefactoring",
+      "description": "Refactoring research and planning skills for maintainability-focused PR and local-diff work.",
+      "version": "0.1.0",
+      "source": "./",
+      "author": {
+        "name": "Andry Lebedev"
+      }
+    }
+  ]
+}

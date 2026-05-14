@@ -1,0 +1,18 @@
+{
+  "name": "superrefactoring",
+  "description": "Refactoring research and planning skills for maintainability-focused PR and local-diff work.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Andry Lebedev"
+  },
+  "homepage": "https://github.com/andry-lebedev/superrefactoring",
+  "repository": "https://github.com/andry-lebedev/superrefactoring",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "refactoring",
+    "maintainability",
+    "planning",
+    "code-review"
+  ]
+}

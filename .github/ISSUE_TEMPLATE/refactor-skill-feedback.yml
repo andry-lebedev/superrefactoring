@@ -1,0 +1,27 @@
+name: Refactor skill feedback
+description: Report a case where Superrefactoring research or planning behaved poorly.
+title: "[feedback]: "
+labels:
+  - feedback
+body:
+  - type: textarea
+    id: prompt
+    attributes:
+      label: Prompt or scenario
+      description: What did the user ask the agent to do?
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What should the skill have caused the agent to do?
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: What happened instead?
+    validations:
+      required: true

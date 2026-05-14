@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Superrefactoring">
+  <rect width="64" height="64" rx="14" fill="#2563eb"/>
+  <path d="M18 20h20c6 0 10 4 10 10s-4 10-10 10H27" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+  <path d="M28 14l-10 6 10 6M36 50l10-6-10-6" fill="none" stroke="#bfdbfe" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M46 44H26c-6 0-10-4-10-10s4-10 10-10h11" fill="none" stroke="#dbeafe" stroke-width="6" stroke-linecap="round"/>
+</svg>

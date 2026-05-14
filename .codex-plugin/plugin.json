@@ -1,0 +1,43 @@
+{
+  "name": "superrefactoring",
+  "version": "0.1.0",
+  "description": "Refactoring research and planning skills for maintainability-focused PR and local-diff work.",
+  "author": {
+    "name": "Andry Lebedev",
+    "url": "https://github.com/andry-lebedev"
+  },
+  "homepage": "https://github.com/andry-lebedev/superrefactoring",
+  "repository": "https://github.com/andry-lebedev/superrefactoring",
+  "license": "MIT",
+  "keywords": [
+    "refactoring",
+    "skills",
+    "maintainability",
+    "code-review",
+    "planning",
+    "architecture"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Superrefactoring",
+    "shortDescription": "Research and plan safe, maintainability-focused refactors",
+    "longDescription": "Use Superrefactoring to investigate PRs and local diffs before refactoring, map upstream and downstream dependencies, compare refactor scopes, and write behavior-preserving implementation plans.",
+    "developerName": "Andry Lebedev",
+    "category": "Coding",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Research this PR for refactoring opportunities.",
+      "Write a maintainability-focused refactor plan for this diff."
+    ],
+    "websiteURL": "https://github.com/andry-lebedev/superrefactoring",
+    "privacyPolicyURL": "https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement",
+    "termsOfServiceURL": "https://docs.github.com/en/site-policy/github-terms/github-terms-of-service",
+    "brandColor": "#2563EB",
+    "composerIcon": "./assets/superrefactoring-small.svg",
+    "screenshots": []
+  }
+}

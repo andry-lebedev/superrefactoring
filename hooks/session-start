@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PLUGIN_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+
+escape_for_json() {
+  local s="$1"
+  s="${s//\\/\\\\}"
+  s="${s//\"/\\\"}"
+  s="${s//$'\n'/\\n}"
+  s="${s//$'\r'/\\r}"
+  s="${s//$'\t'/\\t}"
+  printf '%s' "$s"
+}
+
+session_context="<IMPORTANT>\nYou have the Superrefactoring skills library available.\n\nUse refactor-research when a user asks to inspect a PR, branch, or local diff for maintainability/refactoring opportunities before code changes.\nUse writing-refactor-plans when research exists and the user wants a scoped, behavior-preserving refactor plan.\n\nThese skills do not write output files or implement code unless the user explicitly asks through a separate execution workflow.\n</IMPORTANT>"
+session_context_escaped="$(escape_for_json "$session_context")"
+
+if [ -n "${CURSOR_PLUGIN_ROOT:-}" ]; then
+  printf '{\n  "additional_context": "%s"\n}\n' "$session_context_escaped"
+elif [ -n "${CLAUDE_PLUGIN_ROOT:-}" ] && [ -z "${COPILOT_CLI:-}" ]; then
+  printf '{\n  "hookSpecificOutput": {\n    "hookEventName": "SessionStart",\n    "additionalContext": "%s"\n  }\n}\n' "$session_context_escaped"
+else
+  printf '{\n  "additionalContext": "%s"\n}\n' "$session_context_escaped"
+fi
